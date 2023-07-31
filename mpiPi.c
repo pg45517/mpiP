@@ -19,7 +19,7 @@ static char *svnid = "$Id$";
 #include <unistd.h>
 #include "mpiPi.h"
 
-
+char* slurmjobid = "SLURM_JOB_ID";
 
 static int
 mpiPi_callsite_stats_src_hashkey (const void *p)
@@ -595,14 +595,8 @@ mpiPi_publishResults (int report_style)
     {
 
       /* Generate output filename, and open */
-      do
-        {
-          printCount++;
-          snprintf (mpiPi.oFilename, 256, "%s/%s.%d.%d.%d.mpiP",
-                    mpiPi.outputDir, mpiPi.appName, mpiPi.size, mpiPi.procID,
-                    printCount);
-        }
-      while (access (mpiPi.oFilename, F_OK) == 0);
+      char* job_id = getenv(slurmjobid);
+      mpiPi.oFilename = jobid;
 
       fp = fopen (mpiPi.oFilename, "w");
 
